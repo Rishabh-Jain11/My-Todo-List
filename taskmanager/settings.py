@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,16 +76,25 @@ WSGI_APPLICATION = 'taskmanager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tododb',             # Jo tumne abhi pgAdmin mein banaya
-        'USER': 'postgres',           # Default user hamesha 'postgres' hota hai
-        'PASSWORD': '1234',  # Jo password tumne installation ke waqt dala tha
-        'HOST': 'localhost',          # Iska matlab localhost (tumhara laptop)
-        'PORT': '5432',               # Postgres ka default port
+
+
+if os.environ.get("DATABASE_URL"):
+    # Render / Production
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
     }
-}
+else:
+    # Local machine
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'tododb',
+            'USER': 'postgres',
+            'PASSWORD': '1234',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 
