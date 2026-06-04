@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup</title>
+
+<style>
+
+body{
+    background:black;
+    color:white;
+    font-family:Arial;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.signup-box{
+    background:#222;
+    padding:30px;
+    border-radius:10px;
+    width:300px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:blue;
+    color:white;
+    border:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="signup-box">
+
+<h2>Create Account</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<!-- Django signup form fields -->
+{{ form.as_p }}
+
+<button type="submit">Signup</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

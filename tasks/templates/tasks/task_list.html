@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Manager</title>
+
+<style>
+
+/* Page background */
+body{
+    background-color:#050444;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    display:flex;
+    justify-content:center;
+}
+
+/* Main container */
+.container{
+    width:500px;
+    margin-top:50px;
+}
+
+/* Heading */
+h1{
+    text-align:center;
+    color:#00e5ff;
+}
+
+/* Add task button */
+.add-btn{
+    display:block;
+    text-align:center;
+    background:#00e5ff;
+    color:black;
+    padding:10px;
+    border-radius:6px;
+    text-decoration:none;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+/* Task list */
+ul{
+    list-style:none;
+    padding:0;
+}
+
+/* Each task card */
+li{
+    background:#141405;
+    margin-bottom:12px;
+    padding:12px;
+    border-radius:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* Pending task */
+.pending{
+    color:#ffcc00;
+}
+
+/* Completed task */
+.completed{
+    color:#00ff9c;
+}
+
+/* Buttons */
+.action-btn{
+    padding:5px 10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
+    font: bold;
+}
+
+/* Toggle button */
+.toggle{
+    background:#2962ff;
+    color:rgb(0, 0, 0);
+    font: bold;
+
+}
+
+/* Delete button */
+.delete-btn{
+    padding:5px 10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
+    background:#2962ff;
+    color:rgb(0, 0, 0);
+    font: bold;
+
+}
+.view_task{
+     padding:5px 10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
+    background:#2962ff;
+    color:rgb(0, 0, 0);
+    font: bold;
+
+}
+.edit_btn{
+     padding:5px 10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    text-decoration:none;
+    font-size:12px;
+    background:#2962ff;
+    color:rgb(0, 0, 0);
+    font: bold;
+
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📝 My Tasks</h1>
+{% if messages %}  <!-- check if any messages exist -->
+    
+    {% for message in messages %}  <!-- loop through each message -->
+
+        <div style="padding:10px; margin:10px 0; background:#222; color:#fafdfc;">
+            {{ message }}  <!-- display the message text -->
+        </div>
+
+    {% endfor %}
+
+{% endif %}
+
+<!-- Add Task Button -->
+<a class="add-btn" href="{% url 'add' %}">+ Add New Task</a>
+
+<ul>
+
+{% for task in tasks %}
+
+<li>
+
+<div>
+
+<!-- Show task title -->
+<span class="{% if task.completed %}
+completed
+{% else %}
+pending
+{% endif %}">
+    {{ task.task }}
+</span>
+
+<br>
+
+<!-- Show task status -->
+{% if task.completed %}
+    <small>✅ Completed</small>
+{% else %}
+    <small>⏳ Pending</small>
+{% endif %}
+
+</div>
+
+<div>
+<a class="view_task" href="{% url 'task_detail' task.pk%}"> View Task</a>
+<!-- Toggle completion -->
+<form method="POST" action="{% url 'toggle' task.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button class="action-btn toggle" type="submit">
+        Change Status
+    </button>
+</form>
+
+<br>
+<br>
+
+<a class="delete-btn" href="{% url 'delete' task.id %}">Delete Task</a>
+<a class="edit_btn" href="{% url 'update' task.id %}">Edit Task</a>
+
+</div>
+
+</li>
+
+{% empty %}
+
+<li>No tasks yet. Add one!</li>
+
+
+{% endfor %}
+
+</ul>
+
+</div>
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
